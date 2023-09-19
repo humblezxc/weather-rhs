@@ -1,11 +1,15 @@
 import './App.scss'
+import Header from "./components/Header.tsx";
+import WeatherLayout from "./components/WeatherLayout.tsx";
 
 function App() {
-  return (
-    <>
-      <h1>Weather RED Software House App</h1>
-    </>
-  )
+    return (
+        <>
+            <Header/>
+            <WeatherLayout />
+
+        </>
+    )
 }
 
 export default App
