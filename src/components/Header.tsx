@@ -1,5 +1,5 @@
 import WeatherForm from "./WeatherForm.tsx";
-import {IHandleCityChange} from "../models.ts";
+import {IHandleCityChange} from "../models/ICityWeather.ts";
 
 interface HeaderProps {
     handleCityChange: IHandleCityChange;

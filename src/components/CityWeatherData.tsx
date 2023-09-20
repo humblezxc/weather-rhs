@@ -1,10 +1,11 @@
-import {ICityWeather} from "../models.ts";
+import { ICityWeather } from "../models/ICityWeather.ts";
 
-interface CitiesDataProps  {
-    cityWeather: ICityWeather
+interface CitiesDataProps {
+    cityWeather: ICityWeather;
 }
-export default function CityWeatherData({cityWeather}: CitiesDataProps) {
-    return(
+
+export default function CityWeatherData({ cityWeather }: CitiesDataProps) {
+    return (
         <>
             <tr className="bg-white dark:bg-gray-800">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -17,10 +18,9 @@ export default function CityWeatherData({cityWeather}: CitiesDataProps) {
                     {cityWeather.current.temp_c}
                 </td>
                 <td className="px-6 py-4">
-                    searched: 1 time(s)
+                    searched: {cityWeather.count} time(s)
                 </td>
             </tr>
         </>
     );
-
 }
