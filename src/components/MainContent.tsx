@@ -3,19 +3,17 @@ import CityWeatherData from "./CityWeatherData.tsx";
 import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
 import {fetchData} from "../store/reducers/ActionCreator.ts";
 
-interface WeatherLayoutProps {
-    city: string | null
-}
-
-export default function MainContent({city}: WeatherLayoutProps) {
+export default function MainContent() {
     const citiesWithCount = useAppSelector((state) => state.weatherReducer.weather);
     const dispatch = useAppDispatch();
+    const city = useAppSelector(state => state.weatherReducer.cityName);
 
     useEffect(() => {
         if (city) {
             dispatch(fetchData(city));
         }
-    }, [city, dispatch])
+    }, [dispatch])
+
     return (
         <main>
             <section className="container relative overflow-x-auto py-10">
