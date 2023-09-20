@@ -9,4 +9,5 @@ export interface ICityWeather {
     current: {
         temp_c: number;
     }
+    count: number
 }

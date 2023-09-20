@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {IHandleCityChange} from "../models.ts";
+import {IHandleCityChange} from "../models/ICityWeather.ts";
 
 interface WeatherFormProps {
     handleCityChange: IHandleCityChange

@@ -1,31 +1,21 @@
-import axios from "axios";
-import {useEffect, useState} from "react";
-import {ICityWeather} from "../models.ts";
+import {useEffect} from "react";
 import CityWeatherData from "./CityWeatherData.tsx";
+import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
+import {fetchData} from "../store/reducers/ActionCreator.ts";
 
 interface WeatherLayoutProps {
     city: string | null
 }
 
-const API_KEY = import.meta.env.VITE_API_KEY;
 export default function MainContent({city}: WeatherLayoutProps) {
-    const [cities, setCities] = useState<ICityWeather[]>([])
-    const fetchWeatherData = async () => {
-        try {
-            if (city) {
-                const response = await axios.get<ICityWeather>(
-                    `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`
-                );
-                setCities((prevCities) => [...prevCities, response.data]);
-            }
-        } catch (error) {
-            console.error("Error fetching weather data:", error);
-        }
-    }
+    const citiesWithCount = useAppSelector((state) => state.weatherReducer.weather);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        fetchWeatherData();
-    }, [city])
+        if (city) {
+            dispatch(fetchData(city));
+        }
+    }, [city, dispatch])
     return (
         <main>
             <section className="container relative overflow-x-auto py-10">
@@ -47,7 +37,9 @@ export default function MainContent({city}: WeatherLayoutProps) {
                     </tr>
                     </thead>
                     <tbody>
-                    {cities.map( (city, index) => <CityWeatherData key={index} cityWeather={city} />)}
+                    {citiesWithCount.map((city, index) => (
+                        <CityWeatherData key={index} cityWeather={city}/>
+                    ))}
                     </tbody>
                 </table>
             </section>
