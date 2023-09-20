@@ -12,9 +12,8 @@ function App() {
         <>
             <Header handleCityChange={handleCityChange}/>
             <MainContent city={city}/>
-
         </>
-    )
+    );
 }
 
 export default App
