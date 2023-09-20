@@ -1,36 +1,20 @@
-import axios from "axios";
 import {useEffect} from "react";
-import {ICityWeather} from "../models/ICityWeather.ts";
 import CityWeatherData from "./CityWeatherData.tsx";
 import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
-import {weatherSlice} from "../store/reducers/WeatherSlice.ts";
+import {fetchData} from "../store/reducers/ActionCreator.ts";
 
 interface WeatherLayoutProps {
     city: string | null
 }
 
-const API_KEY = import.meta.env.VITE_API_KEY;
-
 export default function MainContent({city}: WeatherLayoutProps) {
     const citiesWithCount = useAppSelector((state) => state.weatherReducer.weather);
-    const {requestCount} = weatherSlice.actions
     const dispatch = useAppDispatch();
 
-    const fetchWeatherData = async () => {
-        try {
-            if (city) {
-                const response = await axios.get<ICityWeather>(
-                    `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`
-                );
-                dispatch(requestCount({...response.data, count: 1}))
-            }
-        } catch (error) {
-            console.error("Error fetching weather data:", error);
-        }
-    }
-
     useEffect(() => {
-        fetchWeatherData();
+        if (city) {
+            dispatch(fetchData(city));
+        }
     }, [city, dispatch])
     return (
         <main>
