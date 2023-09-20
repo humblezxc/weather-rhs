@@ -1,21 +1,25 @@
 import React, {useState} from "react";
-import {IHandleCityChange} from "../models/ICityWeather.ts";
+import {useAppDispatch} from "../hooks/redux.ts";
+import {handleCity} from '../store/reducers/WeatherSlice.ts'
 
-interface WeatherFormProps {
-    handleCityChange: IHandleCityChange
-}
-export default function WeatherForm({handleCityChange}: WeatherFormProps) {
+export default function WeatherForm() {
     const [city, setCity] = useState('')
+    const dispatch = useAppDispatch();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCity(e.target.value.trim())
+        setCity(e.target.value.trim())
     }
-    const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-      e.preventDefault();
-        handleCityChange(city);
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (city.trim() !== '') {
+            dispatch(handleCity(city.trim()));
+        }
     }
+
     return (
         <form className="flex pb-4" onSubmit={handleSubmit}>
-            <input className="border focus:border-red-600 outline-none p-2" onChange={handleChange} type="text" placeholder="Enter city name"/>
+            <input className="border focus:border-red-600 outline-none p-2" onChange={handleChange} type="text"
+                   placeholder="Enter city name"/>
             <button className="button bg-red-600">Show</button>
         </form>
     )
