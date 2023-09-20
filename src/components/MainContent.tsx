@@ -1,7 +1,7 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {ICityWeather} from "../models.ts";
-import CitiesData from "./CitiesData.tsx";
+import CityWeatherData from "./CityWeatherData.tsx";
 
 interface WeatherLayoutProps {
     city: string | null
@@ -47,7 +47,7 @@ export default function MainContent({city}: WeatherLayoutProps) {
                     </tr>
                     </thead>
                     <tbody>
-                    {cities.map( (city, index) => <CitiesData key={index} cityWeather={city} />)}
+                    {cities.map( (city, index) => <CityWeatherData key={index} cityWeather={city} />)}
                     </tbody>
                 </table>
             </section>
