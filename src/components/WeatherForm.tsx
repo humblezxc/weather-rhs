@@ -1,9 +1,11 @@
 import React, {useState} from "react";
-import {useAppDispatch} from "../hooks/redux.ts";
+import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
 import {handleCity} from '../store/reducers/WeatherSlice.ts'
+import {fetchData} from "../store/reducers/ActionCreator.ts";
 
 export default function WeatherForm() {
     const [city, setCity] = useState('')
+    const lastSearchedCity = useAppSelector(state => state.weatherReducer.cityName);
     const dispatch = useAppDispatch();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -11,9 +13,11 @@ export default function WeatherForm() {
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (city.trim() !== '') {
-            dispatch(handleCity(city.trim()));
+        if (city !== lastSearchedCity) {
+            dispatch(handleCity(city));
+            setCity(city);
         }
+        dispatch(fetchData(city));
     }
 
     return (

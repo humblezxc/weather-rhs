@@ -12,7 +12,7 @@ export default function MainContent() {
         if (city) {
             dispatch(fetchData(city));
         }
-    }, [city, dispatch])
+    }, [dispatch])
 
     return (
         <main>
