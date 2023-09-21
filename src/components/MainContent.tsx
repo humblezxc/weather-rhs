@@ -16,20 +16,20 @@ export default function MainContent() {
 
     return (
         <main>
-            <section className="container relative overflow-x-auto py-10">
-                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-gray-900 uppercase dark:text-gray-400">
+            <section className="container py-10">
+                <table className="w-full text-sm text-center text-gray-500">
+                    <thead className="text-gray-900 uppercase">
                     <tr>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="md:px-6 py-3">
                             City
                         </th>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="md:px-6 py-3">
                             Date
                         </th>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="md:px-6 py-3">
                             Temperature
                         </th>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="md:px-6 py-3">
                             Count
                         </th>
                     </tr>

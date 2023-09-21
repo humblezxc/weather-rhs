@@ -7,17 +7,17 @@ interface CitiesDataProps {
 export default function CityWeatherData({ cityWeather }: CitiesDataProps) {
     return (
         <>
-            <tr className="bg-white dark:bg-gray-800">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <tr className="bg-white">
+                <th scope="row" className="md:px-6 md:py-4 font-medium text-gray-900">
                     {cityWeather.location.name}
                 </th>
-                <td className="px-6 py-4">
+                <td className="flex-wrap px-1  md:px-6 md:py-4">
                     {cityWeather.location.localtime}
                 </td>
-                <td className="px-6 py-4">
-                    {cityWeather.current.temp_c}
+                <td className="flex-wrap md:px-6 md:py-4">
+                    {cityWeather.current.temp_c} (st C)
                 </td>
-                <td className="px-6 py-4">
+                <td className="flex-wrap md:px-6 md:py-4">
                     searched: {cityWeather.count} time(s)
                 </td>
             </tr>
