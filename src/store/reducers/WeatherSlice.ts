@@ -21,7 +21,9 @@ export const weatherSlice = createSlice({
     name: 'weather',
     initialState,
     reducers: {
-        handleCity: (state, action) => {state.cityName = action.payload},
+        handleCity: (state, action) => {
+            state.cityName = action.payload
+        },
         weatherFetching(state) {
             state.isLoading = true;
             state.modal = true
@@ -30,12 +32,13 @@ export const weatherSlice = createSlice({
             state.isLoading = false;
             state.error = '';
             state.modal = false;
-            const city = state.weather.find(city => city.location.name === action.payload.location.name);
-            city
-                ? ((city.count += 1) &&
-                    (city.location.localtime = action.payload.location.localtime) &&
-                    (city.current.temp_c = action.payload.current.temp_c))
-                : state.weather.push(action.payload);
+            const prevCity = state.weather.filter(obj => obj.location.name === action.payload.location.name).reduce((acc, el) => (el.count > acc.count ? el : acc), {
+                count: 0
+            })
+
+            state.weather = prevCity
+                ? [...state.weather, {...action.payload, count: prevCity.count + 1}]
+                : [...state.weather, {...action.payload, count: 1}];
 
         },
         weatherFetchingError(state, action: PayloadAction<string>) {
@@ -43,7 +46,9 @@ export const weatherSlice = createSlice({
             state.modal = true;
             state.error = action.payload
         },
-        closeModal: (state, action:PayloadAction<boolean>) => {state.modal = action.payload},
+        closeModal: (state, action: PayloadAction<boolean>) => {
+            state.modal = action.payload
+        },
     }
 })
 
