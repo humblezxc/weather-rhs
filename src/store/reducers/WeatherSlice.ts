@@ -31,7 +31,11 @@ export const weatherSlice = createSlice({
             state.error = '';
             state.modal = false;
             const city = state.weather.find(city => city.location.name === action.payload.location.name);
-            city ? city.count += 1 : state.weather.push(action.payload);
+            city
+                ? ((city.count += 1) &&
+                    (city.location.localtime = action.payload.location.localtime) &&
+                    (city.current.temp_c = action.payload.current.temp_c))
+                : state.weather.push(action.payload);
 
         },
         weatherFetchingError(state, action: PayloadAction<string>) {
