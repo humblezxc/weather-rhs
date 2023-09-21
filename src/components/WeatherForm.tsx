@@ -22,8 +22,8 @@ export default function WeatherForm() {
 
     return (
         <form className="flex pb-4" onSubmit={handleSubmit}>
-            <input className="border focus:border-red-600 outline-none p-2" onChange={handleChange} type="text"
-                   placeholder="Enter city name"/>
+            <input className="border w-full sm:max-w-200 focus:border-red-600 outline-none p-2" onChange={handleChange}
+                   type="text" placeholder="Enter city name"/>
             <button className="button bg-red-600">Show</button>
         </form>
     )
