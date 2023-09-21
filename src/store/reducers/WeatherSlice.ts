@@ -6,6 +6,7 @@ interface WeatherState {
     isLoading: boolean;
     error: string;
     cityName: string;
+    modal: boolean
 }
 
 const initialState: WeatherState = {
@@ -13,6 +14,7 @@ const initialState: WeatherState = {
     isLoading: false,
     error: '',
     cityName: '',
+    modal: false
 }
 
 export const weatherSlice = createSlice({
@@ -20,19 +22,26 @@ export const weatherSlice = createSlice({
     initialState,
     reducers: {
         handleCity: (state, action) => {state.cityName = action.payload},
-        requestCount: (state, action) => {
-            const city = state.weather.find(city => city.location.name === action.payload.location.name);
-            city ? city.count += 1 : state.weather.push(action.payload);
-        },
         weatherFetching(state) {
             state.isLoading = true;
+            state.modal = true
+        },
+        weatherFetchingSuccess(state, action) {
+            state.isLoading = false;
+            state.error = '';
+            state.modal = false;
+            const city = state.weather.find(city => city.location.name === action.payload.location.name);
+            city ? city.count += 1 : state.weather.push(action.payload);
+
         },
         weatherFetchingError(state, action: PayloadAction<string>) {
             state.isLoading = false;
+            state.modal = true;
             state.error = action.payload
         },
+        closeModal: (state, action:PayloadAction<boolean>) => {state.modal = action.payload},
     }
 })
 
-export const {handleCity} = weatherSlice.actions
+export const {handleCity, closeModal} = weatherSlice.actions
 export default weatherSlice.reducer;

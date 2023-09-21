@@ -2,21 +2,28 @@ import {useEffect} from "react";
 import CityWeatherData from "./CityWeatherData.tsx";
 import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
 import {fetchData} from "../store/reducers/ActionCreator.ts";
+import {Modal} from "./Modal.tsx";
 
 export default function MainContent() {
-    const citiesWithCount = useAppSelector((state) => state.weatherReducer.weather);
+    const {weather, cityName, error, isLoading, modal} = useAppSelector(state => state.weatherReducer)
     const dispatch = useAppDispatch();
-    const city = useAppSelector(state => state.weatherReducer.cityName);
 
     useEffect(() => {
-        if (city) {
-            dispatch(fetchData(city));
-        }
+        if (cityName) dispatch(fetchData(cityName));
     }, [dispatch])
-
     return (
         <main>
             <section className="container py-10">
+                {error && modal && (
+                    <Modal title={"Error"}>
+                        {error}
+                    </Modal>
+                )}
+                {isLoading && modal && (
+                    <Modal title={"Loading..."}>
+                        {isLoading}
+                    </Modal>
+                )}
                 <table className="w-full text-sm text-center text-gray-500">
                     <thead className="text-gray-900 uppercase">
                     <tr>
@@ -35,7 +42,7 @@ export default function MainContent() {
                     </tr>
                     </thead>
                     <tbody>
-                    {citiesWithCount.map((city, index) => (
+                    {weather.map((city, index) => (
                         <CityWeatherData key={index} cityWeather={city}/>
                     ))}
                     </tbody>

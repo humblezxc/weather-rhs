@@ -2,17 +2,24 @@ import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
 import {handleCity} from '../store/reducers/WeatherSlice.ts'
 import {fetchData} from "../store/reducers/ActionCreator.ts";
+import ErrorMessage from "./ErrorMessage.tsx";
 
 export default function WeatherForm() {
     const [city, setCity] = useState('')
+    const [error, setError] = useState("")
     const lastSearchedCity = useAppSelector(state => state.weatherReducer.cityName);
     const dispatch = useAppDispatch();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCity(e.target.value.trim())
+        setError('')
+        setCity(e.target.value)
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (city.trim().length === 0) {
+            setError('Please enter existing city.')
+            return
+        }
         if (city !== lastSearchedCity) {
             dispatch(handleCity(city));
             setCity(city);
@@ -21,10 +28,16 @@ export default function WeatherForm() {
     }
 
     return (
-        <form className="flex pb-4" onSubmit={handleSubmit}>
-            <input className="border w-full sm:max-w-200 focus:border-red-600 outline-none p-2" onChange={handleChange}
-                   type="text" placeholder="Enter city name"/>
-            <button className="button bg-red-600">Show</button>
+        <form className="flex flex-col pb-4" onSubmit={handleSubmit}>
+            <div className="flex">
+                <input className="border w-full sm:max-w-200 focus:border-red-600 outline-none p-2"
+                       onChange={handleChange}
+                       type="text" placeholder="Enter city name"/>
+                <button className="button bg-red-600">Show</button>
+            </div>
+            {error && <>
+                <ErrorMessage error={error}/>
+            </>}
         </form>
     )
 }
