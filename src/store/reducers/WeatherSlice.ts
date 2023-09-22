@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ICityWeather} from "../../models/ICityWeather.ts";
+import Cookies from 'universal-cookie';
 
 interface WeatherState {
     weather: ICityWeather[];
@@ -32,14 +33,13 @@ export const weatherSlice = createSlice({
             state.isLoading = false;
             state.error = '';
             state.modal = false;
-            const prevCity = state.weather.filter(obj => obj.location.name === action.payload.location.name).reduce((acc, el) => (el.count > acc.count ? el : acc), {
-                count: 0
-            })
 
-            state.weather = prevCity
-                ? [...state.weather, {...action.payload, count: prevCity.count + 1}]
-                : [...state.weather, {...action.payload, count: 1}];
+            const cookies = new Cookies()
+            const existingCount = cookies.get(action.payload.location.name);
+            const incrementedCount = existingCount ? parseInt(cookies.get(action.payload.location.name)) + 1 : 1;
 
+            cookies.set(action.payload.location.name, incrementedCount)
+            state.weather = [...state.weather, {...action.payload, count: incrementedCount}]
         },
         weatherFetchingError(state, action: PayloadAction<string>) {
             state.isLoading = false;

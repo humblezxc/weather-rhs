@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
 import {fetchData} from "../store/reducers/ActionCreator.ts";
 import ErrorMessage from "./ErrorMessage.tsx";
@@ -18,16 +18,14 @@ export default function WeatherForm() {
         e.preventDefault();
         if (city.trim().length === 0) {
             setError('Please enter existing city.')
-            return;
+            return
         }
-        dispatch(handleCity(city));
-        dispatch(fetchData(cityName))
+        if (city !== cityName) {
+            dispatch(handleCity(city));
+            setCity(city);
+        }
+        dispatch(fetchData(city));
     }
-    useEffect(() => {
-        if (cityName) {
-            dispatch(fetchData(cityName));
-        }
-    }, [cityName, dispatch]);
 
     return (
         <form className="flex flex-col pb-4" onSubmit={handleSubmit}>
