@@ -39,7 +39,7 @@ export const weatherSlice = createSlice({
             const incrementedCount = existingCount ? parseInt(cookies.get(action.payload.location.name)) + 1 : 1;
 
             cookies.set(action.payload.location.name, incrementedCount)
-            state.weather = [...state.weather, {...action.payload, count: incrementedCount}]
+            state.weather.unshift({...action.payload, count: incrementedCount})
         },
         weatherFetchingError(state, action: PayloadAction<string>) {
             state.isLoading = false;
