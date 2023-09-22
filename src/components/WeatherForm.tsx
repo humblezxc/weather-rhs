@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
-import {handleCity} from '../store/reducers/WeatherSlice.ts'
 import {fetchData} from "../store/reducers/ActionCreator.ts";
 import ErrorMessage from "./ErrorMessage.tsx";
+import {handleCity} from "../store/reducers/WeatherSlice.ts";
 
 export default function WeatherForm() {
     const [city, setCity] = useState('')
     const [error, setError] = useState("")
-    const lastSearchedCity = useAppSelector(state => state.weatherReducer.cityName);
+    const {cityName} = useAppSelector(state => state.weatherReducer);
     const dispatch = useAppDispatch();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ export default function WeatherForm() {
             setError('Please enter existing city.')
             return
         }
-        if (city !== lastSearchedCity) {
+        if (city !== cityName) {
             dispatch(handleCity(city));
             setCity(city);
         }

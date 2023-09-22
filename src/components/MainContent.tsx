@@ -1,16 +1,10 @@
-import {useEffect} from "react";
 import CityWeatherData from "./CityWeatherData.tsx";
-import {useAppDispatch, useAppSelector} from "../hooks/redux.ts";
-import {fetchData} from "../store/reducers/ActionCreator.ts";
+import {useAppSelector} from "../hooks/redux.ts";
 import {Modal} from "./Modal.tsx";
 
 export default function MainContent() {
-    const {weather, cityName, error, isLoading, modal} = useAppSelector(state => state.weatherReducer)
-    const dispatch = useAppDispatch();
+    const {weather, error, isLoading, modal} = useAppSelector(state => state.weatherReducer)
 
-    useEffect(() => {
-        if (cityName) dispatch(fetchData(cityName));
-    }, [dispatch])
     return (
         <main>
             <section className="container py-10">

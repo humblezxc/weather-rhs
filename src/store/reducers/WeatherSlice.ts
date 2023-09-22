@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ICityWeather} from "../../models/ICityWeather.ts";
+import Cookies from 'universal-cookie';
 
 interface WeatherState {
     weather: ICityWeather[];
@@ -21,7 +22,9 @@ export const weatherSlice = createSlice({
     name: 'weather',
     initialState,
     reducers: {
-        handleCity: (state, action) => {state.cityName = action.payload},
+        handleCity: (state, action) => {
+            state.cityName = action.payload
+        },
         weatherFetching(state) {
             state.isLoading = true;
             state.modal = true
@@ -30,20 +33,22 @@ export const weatherSlice = createSlice({
             state.isLoading = false;
             state.error = '';
             state.modal = false;
-            const city = state.weather.find(city => city.location.name === action.payload.location.name);
-            city
-                ? ((city.count += 1) &&
-                    (city.location.localtime = action.payload.location.localtime) &&
-                    (city.current.temp_c = action.payload.current.temp_c))
-                : state.weather.push(action.payload);
 
+            const cookies = new Cookies()
+            const existingCount = cookies.get(action.payload.location.name);
+            const incrementedCount = existingCount ? parseInt(cookies.get(action.payload.location.name)) + 1 : 1;
+
+            cookies.set(action.payload.location.name, incrementedCount)
+            state.weather = [...state.weather, {...action.payload, count: incrementedCount}]
         },
         weatherFetchingError(state, action: PayloadAction<string>) {
             state.isLoading = false;
             state.modal = true;
             state.error = action.payload
         },
-        closeModal: (state, action:PayloadAction<boolean>) => {state.modal = action.payload},
+        closeModal: (state, action: PayloadAction<boolean>) => {
+            state.modal = action.payload
+        },
     }
 })
 

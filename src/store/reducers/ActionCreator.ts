@@ -9,9 +9,9 @@ export const fetchData = (city: string) => async (dispatch: AppDispatch) => {
     try {
         dispatch(weatherSlice.actions.weatherFetching());
         const response = await axios.get<ICityWeather>(
-            `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`
+            `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`
         );
-        dispatch(weatherSlice.actions.weatherFetchingSuccess({...response.data, count: 1}))
+        dispatch(weatherSlice.actions.weatherFetchingSuccess(response.data))
     } catch (e: any) {
         dispatch(weatherSlice.actions.weatherFetchingError(e.message))
     }
